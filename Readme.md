@@ -29,7 +29,8 @@ git clone https://github.com/yourusername/code-analysis-chrome-extension.git
 3. Enable "Developer mode" in the top-right corner of the page.
 4. Click the "Load unpacked" button and select the cloned repository folder.
 5. The extension should now be visible in your extensions list and available for use when browsing Bitbucket and Github.
-6. Change the name of the .env.example file to .env and add your ChatGPT API key to the file.
+6. Change the name of the `.env.example` file to `.env` and add your ChatGPT API key to the file.
+  - Help finding your ChatGPT API key: https://help.openai.com/en/articles/4936850-where-do-i-find-my-secret-api-key
 
 ## Usage
 
@@ -50,5 +51,7 @@ We appreciate your contributions and will review your pull request as soon as po
 
 ## Attribution
 This Chrome extension uses the ChatGPT API by OpenAI for code analysis and optimization suggestions. The extension is not officially affiliated with or endorsed by OpenAI, Bitbucket or Github.
+
+App icons generated here: https://appicons.ai/app/generator/step1
 
 
