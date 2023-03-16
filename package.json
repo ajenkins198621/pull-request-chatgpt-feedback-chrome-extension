@@ -1,0 +1,28 @@
+{
+  "name": "pull-request-chatgpt-feedback-chrome-extension",
+  "version": "1.0.0",
+  "description": "This is a readme",
+  "main": "contentScript.js",
+  "scripts": {
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ajenkins198621/pull-request-chatgpt-feedback-chrome-extension.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ajenkins198621/pull-request-chatgpt-feedback-chrome-extension/issues"
+  },
+  "homepage": "https://github.com/ajenkins198621/pull-request-chatgpt-feedback-chrome-extension#readme",
+  "devDependencies": {
+    "@types/chrome": "^0.0.224",
+    "ts-loader": "^9.4.2",
+    "typescript": "^5.0.2",
+    "webpack": "^5.76.2",
+    "webpack-cli": "^5.0.1"
+  }
+}

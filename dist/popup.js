@@ -1,0 +1,1 @@
+document.getElementById("analyzeCode").addEventListener("click",(()=>{chrome.tabs.query({active:!0,currentWindow:!0},(e=>{chrome.tabs.sendMessage(e[0].id,{action:"analyzeCodeDiff"})}))}));

@@ -18,7 +18,7 @@
             "https://bitbucket.org/*",
             "https://github.com/*"
         ],
-        "js": ["contentScript.js"]
+        "js": ["dist/contentScript.js"]
       }
     ]
   }
