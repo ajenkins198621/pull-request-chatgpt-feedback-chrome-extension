@@ -38,6 +38,9 @@ git clone https://github.com/yourusername/code-analysis-chrome-extension.git
 2. The extension will automatically analyze the code differences and provide feedback on potential bugs, optimizations, comments, and security improvements.
 3. Review the generated feedback and apply the suggested changes to improve your code.
 
+## Helpful links
+1. Getting the diff from GitHub: https://stackoverflow.com/questions/6188591/download-github-pull-request-as-unified-diff
+
 ## Contributing
 
 We welcome contributions to improve and expand the functionality of this Chrome extension. To contribute, please follow these steps:

@@ -9,13 +9,13 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/popup.ts":
-/*!**********************!*\
-  !*** ./src/popup.ts ***!
-  \**********************/
+/***/ "./src/fetchGithubDataContentScript.ts":
+/*!*********************************************!*\
+  !*** ./src/fetchGithubDataContentScript.ts ***!
+  \*********************************************/
 /***/ (() => {
 
-eval("document.getElementById(\"analyzeCode\").addEventListener(\"click\", () => {\n    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {\n        chrome.tabs.sendMessage(tabs[0].id, { action: \"analyzeCodeDiff\" });\n    });\n});\n\n\n//# sourceURL=webpack://pull-request-chatgpt-feedback-chrome-extension/./src/popup.ts?");
+eval("(() => {\n    const data = document.documentElement.textContent;\n    chrome.runtime.sendMessage({ action: \"fetchedData\", data });\n})();\n\n\n//# sourceURL=webpack://pull-request-chatgpt-feedback-chrome-extension/./src/fetchGithubDataContentScript.ts?");
 
 /***/ })
 
@@ -26,7 +26,7 @@ eval("document.getElementById(\"analyzeCode\").addEventListener(\"click\", () =>
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module can't be inlined because the eval devtool is used.
 /******/ 	var __webpack_exports__ = {};
-/******/ 	__webpack_modules__["./src/popup.ts"]();
+/******/ 	__webpack_modules__["./src/fetchGithubDataContentScript.ts"]();
 /******/ 	
 /******/ })()
 ;

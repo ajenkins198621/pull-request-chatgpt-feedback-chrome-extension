@@ -5,6 +5,8 @@
   "main": "contentScript.js",
   "scripts": {
     "build": "webpack",
+    "watch": "webpack --mode development --watch",
+    "server": "node server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,9 +22,19 @@
   "homepage": "https://github.com/ajenkins198621/pull-request-chatgpt-feedback-chrome-extension#readme",
   "devDependencies": {
     "@types/chrome": "^0.0.224",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "ts-loader": "^9.4.2",
     "typescript": "^5.0.2",
     "webpack": "^5.76.2",
     "webpack-cli": "^5.0.1"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "openai": "^3.2.1"
   }
 }

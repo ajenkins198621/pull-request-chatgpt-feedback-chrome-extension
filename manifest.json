@@ -1,24 +1,50 @@
 {
-    "manifest_version": 2,
-    "name": "Code Analysis with ChatGPT",
-    "version": "1.0",
-    "description": "Analyze Bitbucket & GitHub code diffs with ChatGPT API",
-    "permissions": ["activeTab", "https://bitbucket.org/*", "https://github.com/*", "storage"],
-    "browser_action": {
-      "default_popup": "popup.html",
-      "default_icon": {
-        "16": "images/icon16.png",
-        "48": "images/icon48.png",
-        "128": "images/icon128.png"
-      }
+  "manifest_version": 2,
+  "name": "Code Analysis with ChatGPT",
+  "version": "1.0",
+  "description": "Analyze Bitbucket & GitHub code diffs with ChatGPT API",
+  "permissions": [
+    "activeTab",
+    "https://bitbucket.org/*",
+    "https://github.com/*",
+    "storage",
+    "tabs",
+    "https://patch-diff.githubusercontent.com/"
+  ],
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/icon16.png",
+      "48": "images/icon48.png",
+      "128": "images/icon128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://bitbucket.org/*",
+        "https://github.com/*"
+      ],
+      "js": [
+        "dist/contentScript.js"
+      ]
     },
-    "content_scripts": [
-      {
-        "matches": [
-            "https://bitbucket.org/*",
-            "https://github.com/*"
-        ],
-        "js": ["dist/contentScript.js"]
-      }
-    ]
+    {
+      "matches": [
+        "https://patch-diff.githubusercontent.com/*"
+      ],
+      "js": [
+        "dist/fetchGithubDataContentScript.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "background": {
+    "service_worker": "dist/background.js"
+  },
+  "icons": {
+    "16": "images/icon16.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
   }
+}
