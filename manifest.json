@@ -1,17 +1,14 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Code Analysis with ChatGPT",
   "version": "1.0",
   "description": "Analyze Bitbucket & GitHub code diffs with ChatGPT API",
   "permissions": [
     "activeTab",
-    "https://bitbucket.org/*",
-    "https://github.com/*",
     "storage",
-    "tabs",
-    "https://patch-diff.githubusercontent.com/"
+    "tabs"
   ],
-  "browser_action": {
+  "action": {
     "default_popup": "popup.html",
     "default_icon": {
       "16": "images/icon16.png",
@@ -46,5 +43,10 @@
     "16": "images/icon16.png",
     "48": "images/icon48.png",
     "128": "images/icon128.png"
-  }
+  },
+  "host_permissions": [
+    "https://bitbucket.org/*",
+    "https://github.com/*",
+    "https://patch-diff.githubusercontent.com/"
+  ]
 }
