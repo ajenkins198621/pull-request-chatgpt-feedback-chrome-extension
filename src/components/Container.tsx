@@ -5,7 +5,7 @@ const Container: React.FC = (): JSX.Element => {
 
     const {
         diffs,
-        fetchChatGPTDiffs,
+        getDiffsFromPage,
         isExpanded,
         loading,
         setIsExpanded,
@@ -59,7 +59,7 @@ const Container: React.FC = (): JSX.Element => {
                     X
                 </button>
             </div>
-            <button disabled={loading} onClick={fetchChatGPTDiffs}>
+            <button disabled={loading} onClick={getDiffsFromPage}>
                 Get Chat GPT Diffs
             </button>
             <div>Total Diffs: {diffs.length}</div>

@@ -47,6 +47,8 @@
   "host_permissions": [
     "https://bitbucket.org/*",
     "https://github.com/*",
-    "https://patch-diff.githubusercontent.com/"
+    "https://patch-diff.githubusercontent.com/",
+    "http://localhost:*",
+    "http://127.0.0.1:*"
   ]
 }

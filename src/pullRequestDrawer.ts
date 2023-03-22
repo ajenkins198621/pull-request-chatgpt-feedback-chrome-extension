@@ -13,12 +13,13 @@ export default class PullRequestDrawer {
 
     constructor(site: Site) {
         this.site = site;
-        this.port = 4175; // TODO get this from env
+        this.port = 4175;
         this.getPullRequestInfo();
+        console.log('Pull Request ID: ', this.pullRequestId);
         if (this.pullRequestId) {
+            console.log('Injecting React...');
             injectReactComponent();
-            // this.drawContainer();
-            // this.setDiffs(); // TODO move this to React component
+            this.addEventListeners();
         }
     }
 
@@ -33,7 +34,6 @@ export default class PullRequestDrawer {
 
 
     private getGitHubInfo() {
-        console.log('getGitHubInfo', this.site);
         const githubPullRequestRegex = /^(?:https?:\/\/)?(?:www\.)?github\.com\/([^/]+)\/([^/]+)\/pull\/(\d+)/i;
         const match = window.location.href.match(githubPullRequestRegex);
         if (match && match[1] && match[2] && match[3]) {
@@ -45,6 +45,17 @@ export default class PullRequestDrawer {
 
     private getBitbucketInfo() {
         // TODO
+    }
+
+    private addEventListeners() {
+        document.addEventListener("GET_PR_DIFFS_FROM_VANILLA_JS", async (event) => {
+            await this.setDiffs();
+            document.dispatchEvent(new CustomEvent("SET_DIFFS_IN_REACT", {
+                detail: {
+                    diffs: this.diffs
+                }
+            }));
+        });
     }
 
 
@@ -73,37 +84,39 @@ export default class PullRequestDrawer {
 
     }
 
-    private processDiffs(diffString : string) {
-        if(!diffString.length) {
+    private processDiffs(diffString: string) {
+        if (!diffString.length) {
             return;
         }
         this.diffs = this.removeTags(diffString).split('diff --git ').map(diff => {
-            if(diff.trim() === '') {
+            if (diff.trim() === '') {
                 return '';
             }
             return `diff --git ${diff}`
         }).filter(diff => diff.trim() !== '');
     }
 
-    private removeTags(str : string) : string{
-        if ((str===null) || (str===''))
+    private removeTags(str: string): string {
+        if ((str === null) || (str === ''))
             return '';
         else
             str = str.toString();
-              
+
         // Regular expression to identify HTML tags in
         // the input string. Replacing the identified
         // HTML tag with a null string.
-        return str.replace( /(<([^>]+)>)/ig, '');
+        return str.replace(/(<([^>]+)>)/ig, '');
     }
-    
+
 
 
     private async requestFetchDataFromNewTab(url: string): Promise<string> {
         return new Promise((resolve, reject) => {
+            console.log('Sending message to background.ts from pullRequestDrawer.ts');
             chrome.runtime.sendMessage(
                 { action: "fetchDataFromNewTab", url },
                 (response) => {
+                    console.log('response: ', response);
                     if (response.success) {
                         resolve(response.data);
                     } else {
