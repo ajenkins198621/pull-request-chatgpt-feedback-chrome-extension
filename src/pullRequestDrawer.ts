@@ -49,14 +49,11 @@ export default class PullRequestDrawer {
     private addEventListeners() {
         document.addEventListener("GET_PR_DIFFS_FROM_VANILLA_JS", async (event) => {
             await this.setDiffs();
-            if(this.diffs.length > 0) {
-                await this.getChatGPTFeedback();
+            if (this.diffs.length > 0) {
+                this.requestFetchDataFromChatGPTApi();
+            } else {
+                this.sendEventToReact('NO_DIFFS_FOUND', []);
             }
-            document.dispatchEvent(new CustomEvent("SET_DIFFS_IN_REACT", {
-                detail: {
-                    diffs: this.diffs
-                }
-            }));
         });
     }
 
@@ -111,61 +108,47 @@ export default class PullRequestDrawer {
     }
 
 
+    private sendEventToReact(eventName: string, data: any) {
+        document.dispatchEvent(new CustomEvent(eventName, {
+            detail: {
+                diffs: data
+            }
+        }));
+    }
+
+
 
     private async requestFetchDataFromNewTab(url: string): Promise<string> {
         return new Promise((resolve, reject) => {
             console.log('Sending message to background.ts from pullRequestDrawer.ts');
-            chrome.runtime.sendMessage(
-                { action: "fetchDataFromNewTab", url },
-                (response) => {
-                    console.log('response: ', response);
-                    if (response.success) {
-                        resolve(response.data);
-                    } else {
-                        reject(response.error);
-                    }
+            chrome.runtime.sendMessage({
+                action: "fetchDataFromNewTab",
+                url
+            }, (response) => {
+                console.log('response: ', response);
+                if (response.success) {
+                    resolve(response.data);
+                } else {
+                    reject(response.error);
                 }
-            );
+            });
         });
     }
 
-
-
-    private async getChatGPTFeedback(): Promise<string> {
-      try {
-        const response = await fetch(`http://localhost:${this.port}/api/analyze-code-diff`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ diffs: this.diffs }),
-        });
-
-        if (!response.ok) {
-          throw new Error("Error retrieving feedback");
-        }
-
-        const data = await response.json();
-        return data.feedback;
-      } catch (error) {
-        console.error("Error calling server-side component:", error);
-        return "Error retrieving feedback";
-      }
+    private requestFetchDataFromChatGPTApi() {
+        console.log('Sending message to background.ts from pullRequestDrawer.ts - request ChatGPT Info');
+        chrome.runtime.sendMessage({
+            action: "fetchDataFromChatGPTApi",
+            diffs: this.diffs
+        }, (response) => {
+            console.log('response: ', response);
+            if (response.success) {
+                // TODO Send data to React
+                console.log('Yay, success!');
+            } else {
+                // TODO Send error to React
+                console.error(response.error);
+            }
+        })
     }
-
-
-
-    // public run() {
-    //   this._port = chrome.runtime.connect({ name: "content-script" });
-    //   this._port.onMessage.addListener(this._handleMessage);
-    //   this._port.onDisconnect.addListener(this._handleDisconnect);
-    // }
-
-    // private _handleMessage = (message: any) => {
-    //   console.log("Content script received message:", message);
-    // };
-
-    // private _handleDisconnect = () => {
-    //   console.log("Content script disconnected from background script");
-    // };
 }

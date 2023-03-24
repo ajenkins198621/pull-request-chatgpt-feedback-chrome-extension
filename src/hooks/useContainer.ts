@@ -4,12 +4,18 @@ export default function useContainer() {
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [diffs, setDiffs] = useState<string[]>([]);
+    const [error, setError] = useState<string>("");
 
     useEffect(() => {
         document.addEventListener("SET_DIFFS_IN_REACT", (event:any) => {
             if(event && event.detail && event.detail.diffs) {
                 setDiffs(event.detail.diffs);
             }
+            setLoading(false);
+        });
+
+        document.addEventListener("NO_DIFFS_FOUND", (event:any) => {
+            setError("No diffs found");
             setLoading(false);
         });
     }, []);
@@ -26,5 +32,6 @@ export default function useContainer() {
         loading,
         diffs,
         getDiffsFromPage,
+        error,
     }
 }
