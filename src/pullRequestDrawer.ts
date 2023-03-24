@@ -15,7 +15,6 @@ export default class PullRequestDrawer {
         this.site = site;
         this.port = 4175;
         this.getPullRequestInfo();
-        console.log('Pull Request ID: ', this.pullRequestId);
         if (this.pullRequestId) {
             console.log('Injecting React...');
             injectReactComponent();
@@ -50,6 +49,9 @@ export default class PullRequestDrawer {
     private addEventListeners() {
         document.addEventListener("GET_PR_DIFFS_FROM_VANILLA_JS", async (event) => {
             await this.setDiffs();
+            if(this.diffs.length > 0) {
+                await this.getChatGPTFeedback();
+            }
             document.dispatchEvent(new CustomEvent("SET_DIFFS_IN_REACT", {
                 detail: {
                     diffs: this.diffs
@@ -129,29 +131,27 @@ export default class PullRequestDrawer {
 
 
 
+    private async getChatGPTFeedback(): Promise<string> {
+      try {
+        const response = await fetch(`http://localhost:${this.port}/api/analyze-code-diff`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ diffs: this.diffs }),
+        });
 
+        if (!response.ok) {
+          throw new Error("Error retrieving feedback");
+        }
 
-    // private async getChatGPTFeedback = (codeDiff: string): Promise<string> => {
-    //   try {
-    //     const response = await fetch(`http://localhost:${this.port}/api/analyze-code-diff`, {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify({ codeDiff }),
-    //     });
-
-    //     if (!response.ok) {
-    //       throw new Error("Error retrieving feedback");
-    //     }
-
-    //     const data = await response.json();
-    //     return data.feedback;
-    //   } catch (error) {
-    //     console.error("Error calling server-side component:", error);
-    //     return "Error retrieving feedback";
-    //   }
-    // }
+        const data = await response.json();
+        return data.feedback;
+      } catch (error) {
+        console.error("Error calling server-side component:", error);
+        return "Error retrieving feedback";
+      }
+    }
 
 
 

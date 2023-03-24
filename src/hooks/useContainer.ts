@@ -11,7 +11,6 @@ export default function useContainer() {
                 setDiffs(event.detail.diffs);
             }
             setLoading(false);
-        
         });
     }, []);
 
@@ -20,21 +19,6 @@ export default function useContainer() {
         document.dispatchEvent(new CustomEvent("GET_PR_DIFFS_FROM_VANILLA_JS"));
     };
 
-    const fetchChatGPTDiffs = async () => {
-        setLoading(true);
-        await fetch("http://localhost:4175/api/analyze-code-diff", {
-            method: "POST",
-            body: JSON.stringify(diffs)
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                // setDiffs(data);
-            })
-            .catch((err) => {
-                setLoading(false);
-                console.log(err);
-            });
-    }
 
     return {
         isExpanded,

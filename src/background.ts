@@ -1,5 +1,7 @@
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log('background.ts');
+
+  // TOOD Need to listen for url changes
+
     if (request.action === "fetchDataFromNewTab") {
       const url = request.url;
   

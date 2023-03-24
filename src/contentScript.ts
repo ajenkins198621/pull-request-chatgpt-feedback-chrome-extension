@@ -3,9 +3,8 @@ import PullRequestDrawer from "./pullRequestDrawer";
 
 const isGithub = () => {
   const currentURL = window.location.href;
-  // TODO MAKE THIS WORK WITH MORE PAGES IN GITHUB
-  // TODO Currently only works with: https://github.com/ajenkins198621/swaptimal/pull/1135
-  const githubRegex = /^(?:https?:\/\/)?(?:www\.)?github\.com\/[^/]+\/[^/]+\/(?:pull\/\d+|tree\/[^/]+)$/i;
+  const githubRegex = /^(?:https?:\/\/)?(?:www\.)?github\.com\/[^/]+\/[^/]+\/(?:pull\/\d+(?:[^\/\s]+)*|tree\/[^/]+)(?:\/[^/\s]+)*$/i;
+
   return githubRegex.test(currentURL);
 }
 
