@@ -1,15 +1,22 @@
 import { useEffect, useState } from "react";
+import { FormattedDiff } from "../pullRequestDrawer";
 
 export default function useContainer() {
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [diffs, setDiffs] = useState<string[]>([]);
+    const [formattedDiffs, setFormattedDiffs] = useState<FormattedDiff[]>([]);
     const [error, setError] = useState<string>("");
 
     useEffect(() => {
-        document.addEventListener("SET_DIFFS_IN_REACT", (event:any) => {
-            if(event && event.detail && event.detail.diffs) {
-                setDiffs(event.detail.diffs);
+        document.addEventListener("SEND_DIFFS_TO_REACT", (event:any) => {
+            if(event && event.detail) {
+                if(event.detail.diffs) {
+                    setDiffs(event.detail.diffs);
+                }
+                if(event.detail.formattedDiffs) {
+                    setFormattedDiffs(event.detail.formattedDiffs);
+                }
             }
             setLoading(false);
         });
@@ -33,5 +40,6 @@ export default function useContainer() {
         diffs,
         getDiffsFromPage,
         error,
+        formattedDiffs
     }
 }

@@ -1,14 +1,15 @@
 import React from 'react';
 import useContainer from '../hooks/useContainer';
+import Diff from './Diff';
 
 const Container: React.FC = (): JSX.Element => {
 
     const {
-        diffs,
         getDiffsFromPage,
         isExpanded,
         loading,
         setIsExpanded,
+        formattedDiffs
     } = useContainer();
 
     return (
@@ -60,9 +61,20 @@ const Container: React.FC = (): JSX.Element => {
                 </button>
             </div>
             <button disabled={loading} onClick={getDiffsFromPage}>
-                Get Chat GPT Diffs
+                Get Diffs
             </button>
-            <div>Total Diffs: {diffs.length}</div>
+            <div>Total Diffs: {formattedDiffs.length}</div>
+            <ul>
+            {
+                formattedDiffs.map((diff, index) => (
+                    <li key={index}>
+                        <Diff
+                            diff={diff}
+                        />
+                    </li>   
+                ))
+            }
+            </ul>
         </div>
     );
 };
