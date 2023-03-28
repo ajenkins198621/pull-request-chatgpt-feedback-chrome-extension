@@ -29,7 +29,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ diffs: request.diffs }),
+      body: JSON.stringify({ diff: request.diff }),
     })
       .then((response) => response.json())
       .then((data) => {

@@ -19,14 +19,17 @@ const openai = new OpenAIApi(configuration);
 
 app.post("/api/analyze-code-diff", async (req, res) => {
 
-  const diff = req.body.diff;
 
   try {
 
     const getChatGPTData = async () => {
 
-      const prompt = `Can you provide a very short description the code changes and in a sentence or two analyze this Git diff for bugs, code optimizations and any other recommendations? \n${diff}`;
+      const diff = req.body.diff;
+
+      // const prompt = `Can you provide some feedback about the code changes and in a sentence or two analyze this Git diff for bugs, code optimizations and any other recommendations? \n${diff}`;
     
+      const prompt = `Please review the following Git code diff and provide valuable feedback, taking into consideration the following aspects: overall code quality, adherence to best practices, potential bugs, code readability and maintainability, accessibility and performance improvements. Additionally, suggest any possible refactorings or optimizations that may enhance the code's readability, efficiency, or functionality. \n${diff}`;
+
       const completion = await openai.createCompletion({
         model: "text-davinci-003",
         prompt,
@@ -42,7 +45,7 @@ app.post("/api/analyze-code-diff", async (req, res) => {
       }
     };
 
-    getChatGPTData();
+    await getChatGPTData();
 
   } catch (error) {
     console.error("Error calling ChatGPT API:", error);
