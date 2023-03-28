@@ -15,7 +15,16 @@ export default function useContainer() {
                     setDiffs(event.detail.diffs);
                 }
                 if(event.detail.formattedDiffs) {
-                    setFormattedDiffs(event.detail.formattedDiffs);
+                    // Remove any diffs with empty changes and store in state
+                    setFormattedDiffs([...event.detail.formattedDiffs].filter(diff => {
+                        if(diff.changes.length === 0) {
+                            return false;
+                        }
+                        if(diff.path === 'Unknown' || diff.fileName === 'Unknown') {
+                            return false;
+                        }
+                        return true;
+                    }));
                 }
             }
             setLoading(false);
