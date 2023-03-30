@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom';
 import Container from './components/Container';
 
 function injectReactComponent() {
+
+  document.getElementById('my-react-component-container')?.remove();
+
   // Create a container for the React component
   const container = document.createElement('div');
   container.setAttribute('id', 'my-react-component-container');
