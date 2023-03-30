@@ -41,3 +41,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       return true; // Response asynchronously (important to keep);
   }
 });
+
+// Listen for URL changes
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  // TODO do I need to pay attention to the tabId?
+  if (changeInfo.url) {
+    // You can send a message to the content script to notify it about the URL change
+    chrome.tabs.sendMessage(tabId, { action: 'urlChanged', newUrl: changeInfo.url });
+  }
+});
