@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { FormattedDiff } from "../pullRequestDrawer";
 
-export default function useContainer() {
+export default function useContainer(defaultLoading: boolean) {
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(defaultLoading);
     const [diffs, setDiffs] = useState<string[]>([]);
     const [formattedDiffs, setFormattedDiffs] = useState<FormattedDiff[]>([]);
     const [error, setError] = useState<string>("");
