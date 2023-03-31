@@ -16,7 +16,7 @@ export default class PullRequestDrawer {
     private site: Site = '';
     private pullRequestId: string = '';
     private gitHubInfo: { owner: string, repo: string } = { owner: '', repo: '' };
-    // TODO add bitbucket info
+    private bitbucketInfo: { projectKey: string, repositorySlug: string } = { projectKey: '', repositorySlug: '' };
     private port: number = -1;
     private diffs: string[] = [];
     private formattedDiffs: FormattedDiff[] = [];
@@ -26,7 +26,9 @@ export default class PullRequestDrawer {
         this.port = 4175;
         this.getPullRequestInfo();
         if (this.pullRequestId) {
-            injectReactComponent();
+            if (site === 'github' || site === 'bitbucket') {
+                injectReactComponent(site);
+            }
             this.addEventListeners();
         }
     }
@@ -52,7 +54,13 @@ export default class PullRequestDrawer {
     }
 
     private getBitbucketInfo() {
-        // TODO
+        const bitbucketRegex = /^https:\/\/bitbucket\.org\/([^/]+)\/([^/]+)\/pull-requests\/(\d+)/;
+        const match = window.location.href.match(bitbucketRegex);
+        if (match && match[1] && match[2] && match[3]) {
+            this.bitbucketInfo.projectKey = match[1];
+            this.bitbucketInfo.repositorySlug = match[2];
+            this.pullRequestId = match[3];
+        }
     }
 
     destroy() {
@@ -110,6 +118,26 @@ export default class PullRequestDrawer {
 
 
     private async getBitbucketDiff() {
+        if (!this.bitbucketInfo.projectKey || !this.bitbucketInfo.repositorySlug || !this.pullRequestId) {
+            return;
+        }
+        const url = `https://bitbucket.org/!api/2.0/repositories/${this.bitbucketInfo.projectKey}/${this.bitbucketInfo.repositorySlug}/pullrequests/${this.pullRequestId}/diff`;
+        await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+            .then(response => {
+                console.log(
+                    `Response: ${response.status} ${response.statusText}`
+                );
+                return response.text();
+            })
+            .then(text => {
+                this.processDiffs(text);
+            })
+            .catch(err => console.error(err));
 
     }
 
@@ -261,7 +289,7 @@ export default class PullRequestDrawer {
             if (response.success) {
                 try {
                     this.sendEventToReact(`SEND_CHAT_GPT_TO_REACT_${fileName}`, {
-                        chatGPTFeedback: response.data.data[0].text
+                        chatGPTFeedback: this.formatChatGPTResponse(response.data.data[0].text)
                     });
                 } catch (e) {
                     this.sendEventToReact(`SEND_ERROR_REACT_${fileName}`, {
@@ -270,9 +298,17 @@ export default class PullRequestDrawer {
                 }
             } else {
                 this.sendEventToReact(`SEND_ERROR_REACT_${fileName}`, {
-                    error: 'There was an error getting the feedback from the ChatGPT API'
+                    error: 'There was an error getting the feedback from the ChatGPT API.  Make sure you have the local server running (npm run server)'
                 });
             }
         })
+    }
+
+    private formatChatGPTResponse(text: string): string {
+        return text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/\n/g, "<br>");
     }
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Container from './components/Container';
 
-function injectReactComponent() {
+function injectReactComponent(site : 'github' | 'bitbucket') {
 
   document.getElementById('my-react-component-container')?.remove();
 
@@ -12,7 +12,7 @@ function injectReactComponent() {
   document.body.appendChild(container);
 
   // Render the React component
-  ReactDOM.render(<Container />, container);
+  ReactDOM.render(<Container site={site} />, container);
 }
 
 export default injectReactComponent;

@@ -43,7 +43,7 @@ export default function Diff({
                 }
             </a>
             {
-                chatGPTFeedback && <p style={{color: 'green'}}>{chatGPTFeedback}</p>
+                chatGPTFeedback && <p style={{color: 'green'}} dangerouslySetInnerHTML={{__html: chatGPTFeedback}} />
             }
 
             {
