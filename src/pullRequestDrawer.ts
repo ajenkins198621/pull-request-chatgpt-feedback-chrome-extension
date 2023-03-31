@@ -1,4 +1,3 @@
-import * as dotenv from 'dotenv';
 import injectReactComponent from './injectReact';
 
 type Site = '' | 'github' | 'bitbucket';
@@ -64,29 +63,38 @@ export default class PullRequestDrawer {
         }
     }
 
-    private addEventListeners() {
-        document.addEventListener("GET_PR_DIFFS_FROM_VANILLA_JS", async (event) => {
-            await this.setDiffs();
-            if (this.diffs.length == 0) {
-                this.sendEventToReact('NO_DIFFS_FOUND', {});
-                return;
-            }
-            this.sendEventToReact('SEND_DIFFS_TO_REACT', {
-                diffs: this.diffs,
-                formattedDiffs: this.formattedDiffs
-            });
-        });
+    destroy() {
+        // Detach event listeners
+        document.removeEventListener("GET_PR_DIFFS_FROM_VANILLA_JS", this.handleGetPRDiffsFromVanillaJS);
+        document.removeEventListener("GET_CHAT_GPT_FROM_VANILLA_JS", this.handleGetChatGPTFromVanillaJS);
+      }
+    
 
-        document.addEventListener("GET_CHAT_GPT_FROM_VANILLA_JS", async (event: any) => {
-            if (event && event.detail && event.detail.diff && event.detail.fileName) {
-                const { diff, fileName } = event.detail;
-                await this.requestFetchDataFromChatGPTApi(diff, fileName);
-            } else {
-                // TODO SEND ERROR TO REACT
-            }
+    private addEventListeners() {
+        document.addEventListener("GET_PR_DIFFS_FROM_VANILLA_JS", this.handleGetPRDiffsFromVanillaJS);
+        document.addEventListener("GET_CHAT_GPT_FROM_VANILLA_JS", this.handleGetChatGPTFromVanillaJS);
+    }
+
+    private handleGetPRDiffsFromVanillaJS = async (event: any) => {
+        await this.setDiffs();
+        if (this.diffs.length == 0) {
+            this.sendEventToReact('NO_DIFFS_FOUND', {});
+            return;
+        }
+        this.sendEventToReact('SEND_DIFFS_TO_REACT', {
+            diffs: this.diffs,
+            formattedDiffs: this.formattedDiffs
         });
     }
 
+    private handleGetChatGPTFromVanillaJS = async (event: any) => {
+        if (event && event.detail && event.detail.diff && event.detail.fileName) {
+            const { diff, fileName } = event.detail;
+            await this.requestFetchDataFromChatGPTApi(diff, fileName);
+        } else {
+            // TODO SEND ERROR TO REACT
+        }
+    }
 
     private async setDiffs() {
         if (this.site === 'github') {

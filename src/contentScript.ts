@@ -1,5 +1,14 @@
 import PullRequestDrawer from "./pullRequestDrawer";
 
+let currentPullRequestId = -1;
+let pullRequestDrawerInstance : any = null;
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === 'urlChanged' && isPullRequestOrBranchPage()) {
+    instantiateNewPullRequestDrawer();
+  }
+});
+
 
 const isGithub = () => {
   const currentURL = window.location.href;
@@ -19,6 +28,15 @@ const isPullRequestOrBranchPage = () => {
   return isGithub() || isBitbucket();
 };
 
-if (isPullRequestOrBranchPage()) {
-  new PullRequestDrawer(isGithub() ? 'github' : 'bitbucket');
+const instantiateNewPullRequestDrawer = () => {
+  if (pullRequestDrawerInstance !== null) {
+    // Call the destroy method on the previous instance
+    pullRequestDrawerInstance.destroy();
+  }
+  pullRequestDrawerInstance = new PullRequestDrawer(isGithub() ? 'github' : 'bitbucket');
 }
+
+if (isPullRequestOrBranchPage()) {
+  instantiateNewPullRequestDrawer();
+}
+
