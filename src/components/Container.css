@@ -1,0 +1,131 @@
+#pr-chatgpt-extension-container,
+#pr-chatgpt-extension-container * {
+    all: initial;
+    box-sizing: border-box;
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+#pr-chatgpt-extension-container .pr-chatgpt-ext-inner-container {
+    background-color: white;
+    border: 2px solid #234E70;
+    border-radius: 15px;
+    filter: drop-shadow(-3px 2px 5px #FBF8BE);
+    height: 20px;
+    overflow: hidden;
+    position: fixed;
+    right: 15px;
+    top: 15px;
+    width: 300px;
+    z-index: 1000;
+}
+
+#pr-chatgpt-extension-container .pr-chatgpt-ext-inner-container.pr-chatgpt-ext-collapsed {
+    border-radius: 10px 10px 0 0;
+    height: 36px;
+    right: -70px;
+    rotate: 270deg;
+    top: 300px;
+    width: 175px;
+}
+
+#pr-chatgpt-extension-container .pr-chatgpt-ext-inner-container.pr-chatgpt-ext-expanded {
+    height: auto;
+}
+
+#pr-chatgpt-extension-container .pr-chatgpt-ext-inner-container.pr-chatgpt-ext-collapsed {
+    cursor: pointer !important;
+}
+
+#pr-chatgpt-extension-container .pr-chatgpt-ext-inner-container.pr-chatgpt-ext-collapsed .pr-chatgpt-ext-header {
+    justify-content: center;
+}
+
+#pr-chatgpt-extension-container .pr-chatgpt-ext-inner-container.pr-chatgpt-ext-collapsed .pr-chatgpt-ext-header:hover {
+    background-color: #FBF8BE;
+}
+
+#pr-chatgpt-extension-container .pr-chatgpt-ext-inner-container.pr-chatgpt-ext-collapsed .pr-chatgpt-ext-header:hover .pr-chatgpt-ext-title{
+    color: #234E70;
+}
+
+
+#pr-chatgpt-extension-container .pr-chatgpt-ext-inner-container .pr-chatgpt-ext-header {
+    align-items: center;
+    background-color: #234E70;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+}
+
+#pr-chatgpt-extension-container .pr-chatgpt-ext-inner-container .pr-chatgpt-ext-header .pr-chatgpt-ext-title {
+    color: #FBF8BE;
+    font-size: 20px;
+    letter-spacing: 1.2px;
+    word-spacing: 1.2px;
+}
+
+#pr-chatgpt-extension-container .pr-chatgpt-ext-inner-container.pr-chatgpt-ext-collapsed .pr-chatgpt-ext-close-button {
+    display: none;
+}
+#pr-chatgpt-extension-container .pr-chatgpt-ext-inner-container.pr-chatgpt-ext-expanded .pr-chatgpt-ext-header .pr-chatgpt-ext-close-button {
+    align-items: center;
+    background: none;
+    border: none;
+    color: gray;
+    display: flex;
+    font-size: 24px;
+    height: 40px;
+    justify-content: center;
+    width: 40px;
+}
+
+#pr-chatgpt-extension-container .pr-chatgpt-ext-inner-container .pr-chatgpt-ext-content {
+    font-size: 12px;
+    padding: 10px 5px;
+}
+
+#pr-chatgpt-extension-container .pr-chatgpt-ext-total-count {
+    color: #234E70;
+    font-size: 12px;
+}
+
+#pr-chatgpt-extension-container .pr-chatgpt-ext-button {
+    background-color: #234E70;
+    border-radius: 5px;
+    color: #FBF8BE;
+    cursor: pointer;
+    font-size: 12px;
+    margin: 5px;
+    padding: 5px 10px;
+}
+
+
+#pr-chatgpt-extension-container .pr-chatgpt-ext-diff-list a {
+    background-image: linear-gradient(#91bfe3, #234E70);
+    color: white;
+    display: flex;
+    font-size: 12px;
+    padding: 3px 5px;
+    width: 100%;
+}
+
+#pr-chatgpt-extension-container .pr-chatgpt-ext-diff-list p {
+    display: block;
+    padding: 5px;
+    line-height: 1;
+}
+
+#pr-chatgpt-extension-container .pr-chatgpt-ext-diff-list .pr-chatgpt-ext-filename {
+    color: white;
+    font-size: 12px;
+    overflow-x: hidden;
+    width: 75%;
+}
+
+#pr-chatgpt-extension-container .pr-chatgpt-ext-diff-list .pr-chatgpt-ext-line-count {
+    color: white;
+    font-size: 12px;
+    overflow-x: hidden;
+    width: 25%;
+    text-align: right;
+}

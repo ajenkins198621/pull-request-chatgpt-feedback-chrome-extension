@@ -23,9 +23,6 @@ export default function Diff({
             <a
                 style={{
                     cursor: loading || !!chatGPTFeedback ? 'not-allowed' : 'pointer',
-                    paddingTop: '5px',
-                    paddingBottom: '5px',
-                    color: loading || !!chatGPTFeedback ? 'gray' : 'inherit',
                 }}
                 onClick={() => {
                     if(!chatGPTFeedback && !loading) {
@@ -38,7 +35,7 @@ export default function Diff({
                         'Loading...'
                         :
                         <>
-                            {diff.fileName} ({diff.changes.length} lines)
+                            <span className="pr-chatgpt-ext-filename">{diff.fileName}</span><span className="pr-chatgpt-ext-line-count">{diff.changes.length} lines</span>
                         </>
                 }
             </a>

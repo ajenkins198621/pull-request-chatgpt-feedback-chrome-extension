@@ -4,11 +4,11 @@ import Container from './components/Container';
 
 function injectReactComponent(site : 'github' | 'bitbucket') {
 
-  document.getElementById('my-react-component-container')?.remove();
+  document.getElementById('pr-chatgpt-extension-container')?.remove();
 
   // Create a container for the React component
   const container = document.createElement('div');
-  container.setAttribute('id', 'my-react-component-container');
+  container.setAttribute('id', 'pr-chatgpt-extension-container');
   document.body.appendChild(container);
 
   // Render the React component
